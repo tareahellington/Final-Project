@@ -463,23 +463,19 @@ public class MovieReservationApp extends Application {
         Label selectFoodLabel = new Label("Select Food");
         selectFoodLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
 
-        Label instructionsLabel = new Label("When you enter the theater, please scan the barcode sent to you via email or text message at the self-serve station and pick up your food.");
-        instructionsLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
-
         // create food list using reservation.Food class
         List<Food> foodList = new ArrayList<>();
-        foodList.add(new Food("Popcorn", 5.00, 1));
-        foodList.add(new Food("Soda", 3.00, 1));
-        foodList.add(new Food("Candy", 2.50, 1));
-        foodList.add(new Food("Hot Dog", 4.00, 1));
-        foodList.add(new Food("Nachos", 6.00, 1));
-        foodList.add(new Food("Pretzel", 3.50, 1));
-        foodList.add(new Food("Slushie", 6.00, 1));
-        foodList.add(new Food("Fountain Drink", 5.00, 1));
+        foodList.add(new Food("Popcorn", 5.00, 0));
+        foodList.add(new Food("Candy", 2.50, 0));
+        foodList.add(new Food("Hot Dog", 4.00, 0));
+        foodList.add(new Food("Nachos", 6.00, 0));
+        foodList.add(new Food("Pretzel", 3.50, 0));
+        foodList.add(new Food("Fountain Drink/Slushie", 5.00, 0));
 
-        //create a VBox layout
-        VBox foodCheckBox = new VBox(10);
-        foodCheckBox.setAlignment(Pos.CENTER);
+        VBox foodItemBox = new VBox(10);
+        foodItemBox.setAlignment(Pos.CENTER);
+        foodItemBox.setSpacing(20);
+
 
         //create a checkbox for each food item
         for (Food food : foodList) {
@@ -487,23 +483,43 @@ public class MovieReservationApp extends Application {
             checkBox.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-fonth-weight: bold");
             checkBox.setCursor(Cursor.HAND);
 
+            Spinner<Integer> foodQuantitySpinner = new Spinner<>(0, 10, 0);
+            foodQuantitySpinner.setStyle("-fx-background-color: white; -fx-font-size: 12px;");
+            foodQuantitySpinner.setPrefWidth(90);
+            foodQuantitySpinner.setDisable(true);
+
             //add action listener to the checkbox
             checkBox.setOnAction(_ -> {
                 if (checkBox.isSelected()) {
+                    foodQuantitySpinner.setDisable(false);
+                    food.setFoodQuantity(foodQuantitySpinner.getValue());
                     GlobalData.selectedFood.add(food);
                     System.out.println("Selected: " + food.getFoodName());
                 } else {
+                    foodQuantitySpinner.getValueFactory().setValue(0);
+                    foodQuantitySpinner.setDisable(true);
                     GlobalData.selectedFood.remove(food);
                     System.out.println("Deselected: " + food.getFoodName());
                 }
             });
+
+            foodQuantitySpinner.valueProperty().addListener((_, _, newValue) -> {
+                if (checkBox.isSelected()) {
+                    food.setFoodQuantity(newValue);
+                    System.out.println("Updated quantity for " + food.getFoodName() + ": " + newValue);
+                }
+            });
         
-            foodCheckBox.getChildren().add(checkBox);
+            foodItemBox.getChildren().addAll(checkBox, foodQuantitySpinner);
         }
+
+        AnchorPane anchorPane = new AnchorPane();
 
         //continue button
         Button continueButton = new Button("Continue");
-        continueButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
+        AnchorPane.setBottomAnchor(continueButton, 20.0);
+        AnchorPane.setRightAnchor(continueButton, 20.0);
+        continueButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 14px; -fx-font-weight: bold;");
         continueButton.setCursor(Cursor.HAND);
         continueButton.setOnAction(_ -> {
             if (GlobalData.selectedFood.isEmpty()) {
@@ -530,14 +546,18 @@ public class MovieReservationApp extends Application {
 
         //back button
         Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
+        AnchorPane.setBottomAnchor(backButton, 20.0);
+        AnchorPane.setLeftAnchor(backButton, 20.0);
+        backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 14px; -fx-font-weight: bold;");
         backButton.setCursor(Cursor.HAND);
         backButton.setOnAction(_ -> {
             GlobalData.selectedFood.clear();
             selectTicketScreen(primaryStage);
         });
 
-        selectFoodScreen.getChildren().addAll(selectFoodLabel, foodCheckBox, continueButton, skipButton, backButton, instructionsLabel);
+        anchorPane.getChildren().addAll(continueButton, backButton);
+
+        selectFoodScreen.getChildren().addAll(selectFoodLabel, foodItemBox, skipButton, anchorPane);
 
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
@@ -603,14 +623,17 @@ public class MovieReservationApp extends Application {
         //Food
         Label foodLabel = new Label("Selected Food: " + 
             GlobalData.selectedFood.stream()
-            .map(Food::getFoodName).reduce((a, b) -> a + ", " + b)
+            .map(food -> food.getFoodName() + " (" + food.getFoodQuantity() + ")")
+            .reduce((a, b) -> a + ", " + b)
             .orElse("None")
         );
         foodLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
 
         //Calculate total cost
         double ticketCost = GlobalData.adultTickets * 10.00 + GlobalData.childTickets * 5.00 + GlobalData.seniorTickets * 7.50;
-        double foodCost = GlobalData.selectedFood.stream().mapToDouble(Food::getFoodPrice).sum();
+        double foodCost = GlobalData.selectedFood.stream()
+            .mapToDouble(food -> food.getFoodPrice() * food.getFoodQuantity())
+            .sum();
         double totalCost = ticketCost + foodCost;
 
         Label totalCostLabel = new Label("Total Cost: $" + String.format("%.2f", totalCost));
@@ -706,7 +729,7 @@ public class MovieReservationApp extends Application {
         paymentSection.setMaxSize(800, 25);
         paymentSection.setPrefSize(800, 25);
 
-        if (GlobalData.adultTickets * 10.00 + GlobalData.childTickets * 5.00 + GlobalData.seniorTickets * 7.50 + GlobalData.selectedFood.stream().mapToDouble(Food::getFoodPrice).sum() > 0) {
+        if (GlobalData.adultTickets * 10.00 + GlobalData.childTickets * 5.00 + GlobalData.seniorTickets * 7.50 + GlobalData.selectedFood.stream().mapToDouble(food -> food.getFoodPrice() * food.getFoodQuantity()).sum() > 0) {
             // Card Number Field
             TextField cardNumberField = new TextField();
             cardNumberField.setPromptText("Card Number");
@@ -723,12 +746,12 @@ public class MovieReservationApp extends Application {
             cvvField.setStyle("-fx-background-color: white; -fx-prompt-text-fill: black; -fx-font-size: 14px; -fx-pref-width: 200px; -fx-pref-height: 30px;");
 
             paymentSection.getChildren().addAll(
-                new Label("Payment Information:") {{
-                setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
+            new Label("Payment Information:") {{
+            setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
             }},
-                cardNumberField,
-                expirationDateField,
-                cvvField
+            cardNumberField,
+            expirationDateField,
+            cvvField
             );
         }
 

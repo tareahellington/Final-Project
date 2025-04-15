@@ -1,0 +1,50 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MovieReservationApp2",
+            "request": "launch",
+            "vmArgs": "--module-path C:/Users/tarea/Downloads/openjfx-24_windows-x64_bin-sdk/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "MovieReservationApp2",
+
+            "projectName": "TheCinema_91e92847"
+        },
+        {
+            "type": "java",
+            "name": "MovieReservationApp",
+            "request": "launch",
+            "vmArgs": "--module-path C:/Users/tarea/Downloads/openjfx-24_windows-x64_bin-sdk/javafx-sdk-24/lib --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "MovieReservationApp",
+            "projectName": "TheCinema_91e92847"
+        },
+        {
+            "type": "java",
+            "name": "Tickets",
+            "request": "launch",
+            "mainClass": "reservation.Tickets",
+            "projectName": "TheCinema_91e92847"
+        },
+        {
+            "type": "java",
+            "name": "Movies",
+            "request": "launch",
+            "mainClass": "reservation.Movies",
+            "projectName": "TheCinema_91e92847"
+        },
+        {
+            "type": "java",
+            "name": "Food",
+            "request": "launch",
+            "mainClass": "reservation.Food",
+            "projectName": "TheCinema_91e92847"
+        },
+        {
+            "type": "java",
+            "name": "Seats",
+            "request": "launch",
+            "mainClass": "reservation.Seats",
+            "projectName": "TheCinema_91e92847"
+        }
+    ]
+}
