@@ -370,6 +370,15 @@ public class MovieReservationApp extends Application {
         skipButton.setCursor(Cursor.HAND);
         skipButton.setOnAction(_ -> {
             System.out.println("User skipped ticket selection");
+            GlobalData.adultTickets = 0;
+            GlobalData.childTickets = 0;
+            GlobalData.seniorTickets = 0;
+            System.out.println("Total Tickets Selected:" + 
+                "\nAdult: " + GlobalData.adultTickets +
+                "\nChild: " + GlobalData.childTickets +
+                "\nSenior: " + GlobalData.seniorTickets +
+                "\nTotal Cost: $0.00"
+            );
 
             selectFoodScreen(primaryStage);
         });
@@ -492,6 +501,7 @@ public class MovieReservationApp extends Application {
         skipButton.setOnAction(_ -> {
             System.out.println("User skipped food selection");
             GlobalData.selectedFood.clear();
+            System.out.println("Selected Food Items: " + GlobalData.selectedFood);
             totalScreen(primaryStage);
         });
 
