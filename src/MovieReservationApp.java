@@ -1,5 +1,4 @@
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -845,10 +844,6 @@ public class MovieReservationApp extends Application {
         primaryStage.centerOnScreen();
         
         primaryStage.show();
-
-        Platform.runLater(() -> {
-            primaryStage.setMaximized(true);
-        });
     }
 
     public static void main(String[] args) {
