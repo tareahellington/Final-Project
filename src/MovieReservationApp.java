@@ -35,42 +35,33 @@ public class MovieReservationApp extends Application {
 
     //welcome screen
     public void start(Stage primaryStage) {
-        //VBox layout
         VBox welcomeScreen = new VBox(20);
         welcomeScreen.setAlignment(Pos.CENTER);
         welcomeScreen.setPadding(new Insets(20));
         welcomeScreen.setStyle("-fx-background-color: black;");
 
-        //welcome label
         Label welcomeLabel = new Label("Welcome to The Cinema!");
         welcomeLabel.setStyle("-fx-text-fill: white;-fx-font-size: 32px; -fx-font-weight: bold;");
 
-        //continue button
         Button continueButton = new Button("Continue");
         continueButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 12px; -fx-font-weight: bold;");
         continueButton.setCursor(Cursor.HAND);
         continueButton.setOnAction(_ -> {
-            //call the next screen
+
             selectMovieScreen(primaryStage);
         });
 
-        //add children to the layout
         welcomeScreen.getChildren().addAll(welcomeLabel, continueButton);
 
-        //get screen dimensions
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
 
-        //ensure the VBox covers the full screen
-        welcomeScreen.setPrefSize(screenWidth, screenHeight);
-
-        //set the scene
         Scene scene = new Scene(welcomeScreen, screenWidth, screenHeight);
+        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Movie Reservation App");
 
-        //set the stage position to center
         primaryStage.centerOnScreen();
 
         primaryStage.show();
@@ -79,7 +70,6 @@ public class MovieReservationApp extends Application {
 
     //select movie & showtime screen
     public void selectMovieScreen(Stage primaryStage) {
-        //VBox layout
         VBox selectMovieScreen = new VBox(20);
         selectMovieScreen.setAlignment(Pos.CENTER);
         selectMovieScreen.setPadding(new Insets(20));
@@ -118,7 +108,6 @@ public class MovieReservationApp extends Application {
         showtimesChoiceBox.setStyle("-fx-background-color: white; -fx-font-size: 16px;");
         showtimesChoiceBox.setCursor(Cursor.HAND);
 
-        //update showtimesChoiceBox with showtimes for the selected movie
         movieChoiceBox.setOnAction(_ -> {
             showtimesChoiceBox.getItems().clear();
             if (showtimesMap.containsKey(movieChoiceBox.getValue())) {
@@ -135,30 +124,25 @@ public class MovieReservationApp extends Application {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a movie and showtime", ButtonType.OK);
                 alert.showAndWait();
             } else {
-                //save data into global variables
                 GlobalData.selectedMovie = movieChoiceBox.getValue();
                 GlobalData.selectedShowtime = showtimesChoiceBox.getValue();
                 
-                //call the next screen
                 selectSeatsScreen(primaryStage);
             }
         });
 
-        //add children to the layout
         selectMovieScreen.getChildren().addAll(selectMovieLabel, movieChoiceBox, selectShowtimeLabel, showtimesChoiceBox, continueButton);
 
-        //get screen dimensions
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
 
-        //set the scene
         Scene scene = new Scene(selectMovieScreen, screenWidth, screenHeight);
+        primaryStage.setMaximized(true);
         selectMovieScreen.setStyle("-fx-background-color:rgb(0, 0, 0);");
         primaryStage.setTitle("Movie Reservation App");
         primaryStage.setScene(scene);
 
-        //set the stage position to center
         primaryStage.centerOnScreen();
 
         primaryStage.show();
@@ -167,7 +151,6 @@ public class MovieReservationApp extends Application {
     //select seats screen
     public void selectSeatsScreen(Stage primaryStage) {
 
-        //Create borderPane layout
         BorderPane rootLayout = new BorderPane();
 
         Random random = new Random();
@@ -184,34 +167,26 @@ public class MovieReservationApp extends Application {
 
         }
 
-        //StackPane for the "Screen" rectangle and label
         StackPane screenPane = new StackPane();
         VBox.setMargin(screenPane, new Insets(20, 0, 0, 0));
         
-
-        //create the rectangle
         Rectangle screenRectangle = new Rectangle(700, 70);
         screenRectangle.setFill(Color.GRAY);
         screenRectangle.setArcWidth(15); //Rounded corners
         screenRectangle.setArcHeight(15);
 
-        //the label for the screen
         Label screenLabel = new Label("SCREEN");
         screenLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white");
 
-        //add the rectangle and label to StackPane
         screenPane.getChildren().addAll(screenRectangle, screenLabel);
         screenPane.setAlignment(Pos.CENTER);
 
-        //place the "SCREEN" rectangle at the top of the BorderPane
         rootLayout.setTop(screenPane);
 
-        //VBox layout
         VBox selectSeatsScreen = new VBox(20);
         selectSeatsScreen.setAlignment(Pos.CENTER);
         selectSeatsScreen.setPadding(new Insets(20));
 
-        //select seats label
         Label selectSeatsLabel = new Label("Select Seats");
         selectSeatsLabel.setTextFill(Color.WHITE);
         selectSeatsLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -219,14 +194,11 @@ public class MovieReservationApp extends Application {
         Label subtitle = new Label("(The seats in gray are reserved.)");
         subtitle.setTextFill(Color.WHITE);
         
-
-        //grid layout for seats (rows and columns)
         GridPane seatGrid = new GridPane();
         seatGrid.setAlignment(Pos.CENTER);
         seatGrid.setHgap(40);
         seatGrid.setVgap(40);
 
-        //create seats in 5*6 grid
         final int rows = 5;
         final int columns = 6;
         double buttonWidth = 70;
@@ -277,16 +249,14 @@ public class MovieReservationApp extends Application {
                         );
                     }
                 });
-
-                //add the button to the seatGrid
+                
                 seatGrid.add(seatButton, column, row);
             }
         }
 
-        // Wrapping the grid in a ScrollPane for large grids
         ScrollPane scrollPane = new ScrollPane(seatGrid);
-        scrollPane.setFitToWidth(true); // Allow grid to fit width dynamically
-        scrollPane.setFitToHeight(true); // Allow grid to fit height dynamically
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
         
         AnchorPane anchorPane = new AnchorPane();
 
@@ -321,27 +291,23 @@ public class MovieReservationApp extends Application {
             selectMovieScreen(primaryStage);
         });
 
-        //Add buttons to the anchorPane
         anchorPane.getChildren().addAll(continueButton, backButton);
 
-        //add children to the layout
         selectSeatsScreen.getChildren().addAll(screenPane, selectSeatsLabel, seatGrid, subtitle, anchorPane);
 
-        //place the center layout in the center of the BorderPane
         rootLayout.setCenter(selectSeatsScreen);
 
-        //get screen dimensions
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
 
-         //set the scene
-         Scene scene = new Scene(rootLayout, screenWidth, screenHeight);
-         rootLayout.setStyle("-fx-background-color: black");
-         primaryStage.setTitle("Movie Reservation App");
-         primaryStage.setScene(scene);
+        Scene scene = new Scene(rootLayout, screenWidth, screenHeight);
+        primaryStage.setMaximized(true);
+        rootLayout.setStyle("-fx-background-color: black");
+        primaryStage.setTitle("Movie Reservation App");
+        primaryStage.setScene(scene);
 
-        //set the stage position to center
+
         primaryStage.centerOnScreen();
 
         primaryStage.show();
@@ -349,15 +315,13 @@ public class MovieReservationApp extends Application {
 
     //select ticket type screen
     public void selectTicketScreen(Stage primaryStage) {
-        //VBox layout
+  
         VBox ticketSelectionScreen = new VBox(20);
         ticketSelectionScreen.setAlignment(Pos.CENTER);
 
-        //Label
         Label titleLabel = new Label("Select the number of tickets you want");
         titleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
 
-        //Spinners for ticket selection
         Label adultTicketLabel = new Label("Adult Tickets ($10.00):");
         adultTicketLabel.setStyle("-fx-text-fill: white; -fx-text-weight: bold; -fx-font-size: 16px");
         Spinner<Integer> adultTicketSpinner = new Spinner<>(0, 10, GlobalData.adultTickets);
@@ -398,7 +362,6 @@ public class MovieReservationApp extends Application {
             System.out.println("Senior: " + GlobalData.seniorTickets);
             System.out.println("Total Cost: $" + totalCost);
 
-            // Navigate to the next screen
             selectFoodScreen(primaryStage);
         });
 
@@ -411,7 +374,6 @@ public class MovieReservationApp extends Application {
         skipButton.setOnAction(_ -> {
             System.out.println("User skipped ticket selection");
 
-            // Navigate to the next screen
             selectFoodScreen(primaryStage);
         });
 
@@ -426,7 +388,6 @@ public class MovieReservationApp extends Application {
             selectSeatsScreen(primaryStage);
         });
 
-        // Add components to the layout
         ticketSelectionScreen.getChildren().addAll(
                 titleLabel,
                 adultTicketLabel, adultTicketSpinner,
@@ -435,18 +396,16 @@ public class MovieReservationApp extends Application {
                 continueButton, skipButton, backButton
         );
 
-        //get screen dimensions
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
 
-        // Set the scene
         Scene scene = new Scene(ticketSelectionScreen, screenWidth, screenHeight);
+        primaryStage.setMaximized(true);
         ticketSelectionScreen.setStyle("-fx-background-color: black;");
         primaryStage.setTitle("Ticket Selection");
         primaryStage.setScene(scene);
 
-        //set the stage position to center
         primaryStage.centerOnScreen();
 
         primaryStage.show();
@@ -454,16 +413,14 @@ public class MovieReservationApp extends Application {
 
     //select food screen
     public void selectFoodScreen(Stage primaryStage) {
-        //VBox layout
+
         VBox selectFoodScreen = new VBox(20);
         selectFoodScreen.setAlignment(Pos.CENTER);
         selectFoodScreen.setPadding(new Insets(20));
 
-        //select food label
         Label selectFoodLabel = new Label("Select Food");
         selectFoodLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // create food list using reservation.Food class
         List<Food> foodList = new ArrayList<>();
         foodList.add(new Food("Popcorn", 5.00, 0));
         foodList.add(new Food("Candy", 2.50, 0));
@@ -477,7 +434,6 @@ public class MovieReservationApp extends Application {
         foodItemBox.setSpacing(20);
 
 
-        //create a checkbox for each food item
         for (Food food : foodList) {
             CheckBox checkBox = new CheckBox(food.getFoodName() + " - $" + String.format("%.2f",food.getFoodPrice()));
             checkBox.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-fonth-weight: bold");
@@ -488,7 +444,6 @@ public class MovieReservationApp extends Application {
             foodQuantitySpinner.setPrefWidth(90);
             foodQuantitySpinner.setDisable(true);
 
-            //add action listener to the checkbox
             checkBox.setOnAction(_ -> {
                 if (checkBox.isSelected()) {
                     foodQuantitySpinner.setDisable(false);
@@ -564,6 +519,7 @@ public class MovieReservationApp extends Application {
         double screenHeight = primaryScreenBounds.getHeight();
 
         Scene scene = new Scene(selectFoodScreen, screenWidth, screenHeight);
+        primaryStage.setMaximized(true);
         selectFoodScreen.setStyle("-fx-background-color: black");
         primaryStage.setTitle("Movie Reservation App");
         primaryStage.setScene(scene);
@@ -575,15 +531,13 @@ public class MovieReservationApp extends Application {
 
     //total screen
     public void totalScreen(Stage primaryStage) {
-        
-        //VBox layout
+
         VBox totalScreen = new VBox(20);
         totalScreen.setAlignment(Pos.CENTER);
         totalScreen.setPadding(new Insets(20));
         totalScreen.setStyle("-fx-background-color: black;");
 
 
-        //Title label
         Label titleLabel = new Label("Reservation Summary");
         titleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
 
@@ -629,7 +583,7 @@ public class MovieReservationApp extends Application {
         );
         foodLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
 
-        //Calculate total cost
+        //total cost
         double ticketCost = GlobalData.adultTickets * 10.00 + GlobalData.childTickets * 5.00 + GlobalData.seniorTickets * 7.50;
         double foodCost = GlobalData.selectedFood.stream()
             .mapToDouble(food -> food.getFoodPrice() * food.getFoodQuantity())
@@ -658,33 +612,30 @@ public class MovieReservationApp extends Application {
             contactInformationScreen(primaryStage); // Call the confirmation screen
         });
 
-        //Add components to layout
         totalScreen.getChildren().addAll(titleLabel, movieLabel, showtimeLabel, theaterLabel, seatsLabel, ticketsLabel, foodLabel, totalCostLabel, checkoutButton, backButton);
-
-        //Get screen dimensions
+        
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
-
-        //Set the scene
+    
+    
         Scene scene = new Scene(totalScreen, screenWidth, screenHeight);
+        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Reservation Summary");
 
-        //Center the stage
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
     // Contact Information Screen
     public void contactInformationScreen(Stage primaryStage) {
-        // VBox layout
+
         VBox contactScreen = new VBox(20);
         contactScreen.setAlignment(Pos.CENTER);
         contactScreen.setPadding(new Insets(20));
         contactScreen.setStyle("-fx-background-color: black;");
 
-        // Title label
         Label titleLabel = new Label("Enter Your Contact Information");
         titleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
 
@@ -719,7 +670,7 @@ public class MovieReservationApp extends Application {
             }
         });
 
-        // Section for Total and Payment Information
+        // Total and Payment Information
         Label totalLabel = new Label("Total: $" + String.format("%.2f", GlobalData.adultTickets * 10.00 + GlobalData.childTickets * 5.00 + GlobalData.seniorTickets * 7.50 + GlobalData.selectedFood.stream().mapToDouble(food -> food.getFoodPrice() * food.getFoodQuantity()).sum()));
         totalLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
 
@@ -792,13 +743,12 @@ public class MovieReservationApp extends Application {
             backButton
         );
 
-        // Get screen dimensions
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
 
-        // Set the scene
         Scene scene = new Scene(contactScreen, screenWidth, screenHeight);
+        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Contact Information");
         primaryStage.centerOnScreen();
@@ -807,7 +757,7 @@ public class MovieReservationApp extends Application {
 
     //confirmation screen
     public void confirmationScreen(Stage primaryStage) {
-        //VBox layout
+
         VBox confirmationScreen = new VBox(20);
         confirmationScreen.setAlignment(Pos.CENTER);
         confirmationScreen.setPadding(new Insets(20));
@@ -825,22 +775,18 @@ public class MovieReservationApp extends Application {
             //exit the application
             System.exit(0);
         });
-
-        //add children to the layout
         confirmationScreen.getChildren().addAll(confirmationLabel, exitButton);
 
-        //get screen dimensions
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
 
-        //set the scene
         Scene scene = new Scene(confirmationScreen, screenWidth, screenHeight);
+
         primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Reservation Confirmation");
 
-        //center the stage
         primaryStage.centerOnScreen();
         
         primaryStage.show();
