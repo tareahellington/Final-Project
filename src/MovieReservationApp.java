@@ -720,7 +720,7 @@ public class MovieReservationApp extends Application {
         });
 
         // Section for Total and Payment Information
-        Label totalLabel = new Label("Total: $" + String.format("%.2f", GlobalData.adultTickets * 10.00 + GlobalData.childTickets * 5.00 + GlobalData.seniorTickets * 7.50 + GlobalData.selectedFood.stream().mapToDouble(Food::getFoodPrice).sum()));
+        Label totalLabel = new Label("Total: $" + String.format("%.2f", GlobalData.adultTickets * 10.00 + GlobalData.childTickets * 5.00 + GlobalData.seniorTickets * 7.50 + GlobalData.selectedFood.stream().mapToDouble(food -> food.getFoodPrice() * food.getFoodQuantity()).sum()));
         totalLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
 
         VBox paymentSection = new VBox(10);
