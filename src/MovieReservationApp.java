@@ -58,7 +58,6 @@ public class MovieReservationApp extends Application {
         double screenHeight = primaryScreenBounds.getHeight();
 
         Scene scene = new Scene(welcomeScreen, screenWidth, screenHeight);
-        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Movie Reservation App");
 
@@ -138,7 +137,6 @@ public class MovieReservationApp extends Application {
         double screenHeight = primaryScreenBounds.getHeight();
 
         Scene scene = new Scene(selectMovieScreen, screenWidth, screenHeight);
-        primaryStage.setMaximized(true);
         selectMovieScreen.setStyle("-fx-background-color:rgb(0, 0, 0);");
         primaryStage.setTitle("Movie Reservation App");
         primaryStage.setScene(scene);
@@ -302,7 +300,6 @@ public class MovieReservationApp extends Application {
         double screenHeight = primaryScreenBounds.getHeight();
 
         Scene scene = new Scene(rootLayout, screenWidth, screenHeight);
-        primaryStage.setMaximized(true);
         rootLayout.setStyle("-fx-background-color: black");
         primaryStage.setTitle("Movie Reservation App");
         primaryStage.setScene(scene);
@@ -401,7 +398,6 @@ public class MovieReservationApp extends Application {
         double screenHeight = primaryScreenBounds.getHeight();
 
         Scene scene = new Scene(ticketSelectionScreen, screenWidth, screenHeight);
-        primaryStage.setMaximized(true);
         ticketSelectionScreen.setStyle("-fx-background-color: black;");
         primaryStage.setTitle("Ticket Selection");
         primaryStage.setScene(scene);
@@ -519,7 +515,6 @@ public class MovieReservationApp extends Application {
         double screenHeight = primaryScreenBounds.getHeight();
 
         Scene scene = new Scene(selectFoodScreen, screenWidth, screenHeight);
-        primaryStage.setMaximized(true);
         selectFoodScreen.setStyle("-fx-background-color: black");
         primaryStage.setTitle("Movie Reservation App");
         primaryStage.setScene(scene);
@@ -620,7 +615,6 @@ public class MovieReservationApp extends Application {
     
     
         Scene scene = new Scene(totalScreen, screenWidth, screenHeight);
-        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Reservation Summary");
 
@@ -748,7 +742,6 @@ public class MovieReservationApp extends Application {
         double screenHeight = primaryScreenBounds.getHeight();
 
         Scene scene = new Scene(contactScreen, screenWidth, screenHeight);
-        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Contact Information");
         primaryStage.centerOnScreen();
@@ -783,7 +776,6 @@ public class MovieReservationApp extends Application {
 
         Scene scene = new Scene(confirmationScreen, screenWidth, screenHeight);
 
-        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Reservation Confirmation");
 
